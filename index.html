@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Cidadania Digital: Deepfakes e Desinformação</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Cidadania Digital & IA</h1>
+        <p>Conscientização contra Deepfakes e Desinformação</p>
+        <button id="toggle-dark-mode">Alternar Modo Escuro</button>
+    </header>
+
+    <main>
+        <section class="card-info">
+            <h2>O que são Deepfakes?</h2>
+            <p>Deepfakes são vídeos, áudios ou imagens manipulados por Inteligência Artificial de forma tão realista que podem enganar facilmente o espectador. Compreender essa tecnologia é o primeiro passo para exercer a cidadania digital e combater a desinformação automatizada.</p>
+        </section>
+
+        <section class="quiz-container">
+            <h2>Desafio Técnico: Quiz Anti-Desinformação</h2>
+            <p>Teste seus conhecimentos para identificar mídias manipuladas por IA:</p>
+            
+            <form id="quiz-form">
+                <div class="quiz-question">
+                    <p><strong>1. Qual é um sinal comum de que um vídeo pode ser uma deepfake?</strong></p>
+                    
+                    <label>
+                        <input type="radio" name="q1" value="incorreto"> Movimentos fluidos e iluminação perfeita.
+                    </label>
+                    <label>
+                        <input type="radio" name="q1" value="correto"> Piscadas não naturais dos olhos e sombras desalinhadas no rosto.
+                    </label>
+                    <label>
+                        <input type="radio" name="q1" value="incorreto"> Alta resolução de áudio e vídeo.
+                    </label>
+                </div>
+
+                <button type="button" id="submit-quiz">Verificar Resposta</button>
+            </form>
+
+            <div id="quiz-result" class="hidden"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Portal Cidadania Digital - Projeto Escolar Ensino Médio</p>
+        <p>Tag do Projeto: <strong>#cidadaniadigital2026</strong></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
