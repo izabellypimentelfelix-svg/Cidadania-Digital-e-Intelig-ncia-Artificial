@@ -1,0 +1,153 @@
+/* Configurações Globais e Variáveis de Cores */
+:root {
+    --bg-color: #f4f7f6;
+    --text-color: #333333;
+    --card-bg: #ffffff;
+    --primary-color: #2563eb;
+    --accent-color: #10b981;
+}
+
+/* Modo Escuro */
+body.dark-mode {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --card-bg: #1e1e1e;
+    --primary-color: #3b82f6;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Header com Flexbox */
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}
+
+header button {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+header button:hover {
+    background-color: white;
+    color: var(--primary-color);
+}
+
+/* Layout Principal */
+main {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Estilização dos Cards e Seções */
+.card-info, .quiz-container {
+    background-color: var(--card-bg);
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+/* Formulário e Inputs */
+.quiz-question {
+    margin: 20px 0;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+#submit-quiz {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+}
+
+#submit-quiz:hover {
+    opacity: 0.9;
+}
+
+/* Classes utilitárias do JS */
+.hidden {
+    display: none;
+}
+
+#quiz-result {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.success {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.error {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    font-size: 14px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+/* 4. Responsividade (Media Queries para telas menores) */
+@media (max-width: 600px) {
+    main {
+        margin: 15px auto;
+    }
+    
+    header h1 {
+        font-size: 24px;
+    }
+}
