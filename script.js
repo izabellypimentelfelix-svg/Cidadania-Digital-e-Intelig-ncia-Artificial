@@ -35,4 +35,46 @@ document.addEventListener("DOMContentLoaded", function () {
         // Exibe a div de resultado removendo o estado oculto de forma funcional
         resultDiv.style.display = "block";
     });
-});
+document.addEventListener("DOMContentLoaded", function () {
+    
+    // 1. Alternar Modo Escuro
+    const btnTema = document.getElementById("btn-tema");
+    btnTema.addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
+        if (document.body.classList.contains("dark-mode")) {
+            btnTema.textContent = "☀️ Alternar Modo Claro";
+        } else {
+            btnTema.textContent = "🌓 Alternar Modo Escuro";
+        }
+    });
+
+    // 2. Lógica do Jogo
+    let pontuacao = 0;
+    const btnJogar = document.getElementById("btn-jogar");
+    const feedbackJogo = document.getElementById("feedback-jogo");
+    const mensagemResultado = document.getElementById("mensagem-resultado");
+    const spanPontos = document.getElementById("pontos");
+
+    btnJogar.addEventListener("click", function () {
+        const opcaoSelecionada = document.querySelector('input[name="decisao"]:checked');
+
+        if (!opcaoSelecionada) {
+            alert("Por favor, selecione uma opção antes de enviar seu veredito!");
+            return;
+        }
+
+        const respostaUsuario = opcaoSelecionada.value;
+        feedbackJogo.classList.remove("oculto", "sucesso-resultado", "erro-resultado");
+
+        if (respostaUsuario === "fake") {
+            pontuacao += 10;
+            mensagemResultado.textContent = "🎯 Excelente! Você identificou os padrões da IA: áudio robótico, fundo borrado e piscadas inconsistentes são fortes indícios de deepfake.";
+            feedbackJogo.classList.add("sucesso-resultado");
+        } else {
+            mensagemResultado.textContent = "❌ Atenção! Você caiu na armadilha. Lembre-se que notícias absurdas com áudio artificial e falhas visuais são geradas por IA.";
+            feedbackJogo.classList.add("erro-resultado");
+        }
+
+        spanPontos.textContent = pontuacao;
+    });
+});});
