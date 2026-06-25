@@ -1,3 +1,6 @@
+/* ==========================================================================
+   CONFIGURAÇÕES GERAIS E LAYOUT PRINCIPAL (FLEXBOX)
+   ========================================================================== */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f7f6;
@@ -8,27 +11,6 @@ body {
     flex-direction: column;
     min-height: 100vh;
     transition: background 0.3s, color 0.3s;
-}
-
-/* --- ESTILO DO MODO ESCURO (CORRIGIDO) --- */
-body.dark-mode {
-    background-color: #121212;
-    color: #ffffff;
-}
-body.dark-mode .card-informativo {
-    background-color: #1e1e1e;
-    color: #ffffff;
-}
-body.dark-mode footer {
-    background-color: #2c2c2c;
-    color: #aaa;
-}
-body.dark-mode .carta {
-    background-color: #3700b3;
-}
-body.dark-mode .carta.virada {
-    background-color: #03dac6;
-    color: #000000;
 }
 
 header {
@@ -46,7 +28,12 @@ header {
     border-radius: 4px;
     font-weight: bold;
     background-color: #ffffff;
-    color: #333333;
+    color: #007bff;
+    transition: transform 0.1s ease;
+}
+
+#btn-acessibilidade:active {
+    transform: scale(0.95);
 }
 
 main {
@@ -62,6 +49,9 @@ main {
     box-sizing: border-box;
 }
 
+/* ==========================================================================
+   CARDS, FORMULÁRIO E COMPONENTES SEMÂNTICOS
+   ========================================================================== */
 .card-informativo {
     background-color: #ffffff;
     border-radius: 8px;
@@ -78,6 +68,10 @@ form {
     gap: 10px;
     max-width: 400px;
     margin: 15px auto;
+}
+
+label {
+    font-weight: bold;
 }
 
 input[type="text"] {
@@ -103,6 +97,9 @@ input[type="text"] {
     font-weight: bold;
 }
 
+/* ==========================================================================
+   TABULEIRO E CARTAS DO JOGO (CSS GRID)
+   ========================================================================== */
 #tabuleiro-jogo {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -122,11 +119,13 @@ input[type="text"] {
     padding: 10px;
     font-size: 14px;
     font-weight: bold;
-    color: transparent;
+    color: transparent; /* Oculta o texto inicialmente */
     user-select: none;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: background-color 0.2s, color 0.2s;
 }
 
+/* Estados de interação das Cartas */
 .carta.virada {
     background-color: #a8dadc;
     color: #000000;
@@ -138,6 +137,9 @@ input[type="text"] {
     cursor: default;
 }
 
+/* ==========================================================================
+   CLASSES UTILITÁRIAS E FEEDBACKS VISUAIS
+   ========================================================================== */
 .oculto {
     display: none !important;
 }
@@ -159,12 +161,52 @@ footer {
     box-sizing: border-box;
 }
 
+/* ==========================================================================
+   MECANISMO DE DO MODO ESCURO (DARK MODE)
+   ========================================================================== */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.dark-mode .card-informativo {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode footer {
+    background-color: #2c2c2c;
+    color: #aaa;
+}
+
+body.dark-mode .carta {
+    background-color: #3700b3;
+}
+
+body.dark-mode .carta.virada {
+    background-color: #03dac6;
+    color: #000000;
+}
+
+body.dark-mode #btn-acessibilidade {
+    background-color: #2c2c2c;
+    color: #bb86fc;
+    border: 1px solid #bb86fc;
+}
+
+/* ==========================================================================
+   AULA 4: RESPONSIVIDADE (MEDIA QUERIES)
+   ========================================================================== */
 @media (max-width: 600px) {
     #tabuleiro-jogo {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr); /* Divide em 2 colunas no celular */
     }
     .carta {
         height: 100px;
         font-size: 12px;
+    }
+    header h1 {
+        font-size: 24px;
     }
 }
