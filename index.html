@@ -3,51 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Cidadania Digital: Combate às Deepfakes</title>
+    <title>Portal Cidadania Digital: Jogo da Memória IA</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
         <h1>Cidadania Digital & IA</h1>
-        <p>Conscientização contra a Desinformação Automatizada</p>
+        <p>Aprenda a detectar Deepfakes jogando!</p>
         <button id="btn-acessibilidade">Alternar Modo Escuro</button>
     </header>
 
     <main>
-        <!-- Seção de Alerta -->
+        <!-- Seção de Contexto -->
         <section class="card-informativo">
-            <h2>O que são Deepfakes?</h2>
-            <p>São vídeos, áudios ou imagens gerados por Inteligência Artificial que imitam perfeitamente o rosto e a voz de pessoas reais. Elas são perigosas quando usadas para espalhar mentiras e enganar a sociedade.</p>
+            <h2>Desafio da Memória Anti-Deepfake</h2>
+            <p>Encontre os pares corretos combinando os <strong>Sinais de Alerta</strong> com as suas <strong>Soluções de Verificação</strong>.</p>
+            
+            <!-- Painel de Pontuação Dinâmico -->
+            <div id="painel-status">
+                <span id="contador-movimentos">Movimentos: 0</span>
+                <span id="mensagem-vitoria" class="oculto">🎉 Parabéns! Você dominou a checagem de fatos!</span>
+            </div>
         </section>
 
-        <!-- Seção do Quiz Interativo -->
-        <section class="card-quiz">
-            <h2>Quiz Anti-Desinformação</h2>
-            <p>Teste seus conhecimentos: Como identificar uma mídia manipulada?</p>
-            
-            <form id="quiz-form">
-                <label for="pergunta">Qual destas alternativas indica uma possível deepfake em vídeo?</label>
-                <select id="pergunta" required>
-                    <option value="" disabled selected>Escolha uma opção...</option>
-                    <option value="errada">Piscar de olhos natural e iluminação perfeita.</option>
-                    <option value="correta">Movimentos estranhos na boca e sombras desalinhadas no rosto.</option>
-                    <option value="errada">Áudio perfeitamente sincronizado com os lábios.</option>
-                </select>
-
-                <button type="submit" id="btn-enviar">Verificar Resposta</button>
-            </form>
-
-            <!-- Elementos dinâmicos controlados pelo JavaScript -->
-            <div id="resultado-container" class="oculto">
-                <p id="texto-resultado"></p>
-                <p id="contador-tentativas">Tentativas realizadas: 0</p>
-            </div>
+        <!-- Tabuleiro do Jogo da Memória -->
+        <section id="tabuleiro-jogo">
+            <!-- As 8 cartas serão geradas dinamicamente pelo JavaScript para demonstrar manipulação avançada do DOM -->
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2026 Projeto Cidadania Digital. Desenvolvido para conscientização comunitária.</p>
+        <p>&copy; 2026 Projeto Cidadania Digital. Desenvolvido para conscientização comunitária. #cidadaniadigital2026</p>
     </footer>
 
     <script src="script.js"></script>
