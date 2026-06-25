@@ -1,26 +1,7 @@
-:root {
-    --cor-fundo: #f4f7f6;
-    --cor-texto: #333333;
-    --cor-primaria: #007bff;
-    --cor-card: #ffffff;
-    --cor-carta-fundo: #1d3557;
-    --cor-carta-virada: #a8dadc;
-    --cor-sucesso: #28a745;
-}
-
-.dark-mode {
-    --cor-fundo: #121212;
-    --cor-texto: #ffffff;
-    --cor-primaria: #bb86fc;
-    --cor-card: #1e1e1e;
-    --cor-carta-fundo: #3700b3;
-    --cor-carta-virada: #03dac6;
-}
-
 body {
     font-family: Arial, sans-serif;
-    background-color: var(--cor-fundo);
-    color: var(--cor-texto);
+    background-color: #f4f7f6;
+    color: #333333;
     margin: 0;
     padding: 0;
     display: flex;
@@ -29,8 +10,29 @@ body {
     transition: background 0.3s, color 0.3s;
 }
 
+/* --- ESTILO DO MODO ESCURO (CORRIGIDO) --- */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+body.dark-mode .card-informativo {
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+body.dark-mode footer {
+    background-color: #2c2c2c;
+    color: #aaa;
+}
+body.dark-mode .carta {
+    background-color: #3700b3;
+}
+body.dark-mode .carta.virada {
+    background-color: #03dac6;
+    color: #000000;
+}
+
 header {
-    background-color: var(--cor-primaria);
+    background-color: #007bff;
     color: white;
     padding: 20px;
     text-align: center;
@@ -43,6 +45,8 @@ header {
     border: none;
     border-radius: 4px;
     font-weight: bold;
+    background-color: #ffffff;
+    color: #333333;
 }
 
 main {
@@ -59,28 +63,46 @@ main {
 }
 
 .card-informativo {
-    background-color: var(--cor-card);
+    background-color: #ffffff;
     border-radius: 8px;
-    padding: 15px;
+    padding: 20px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     width: 100%;
     text-align: center;
     box-sizing: border-box;
 }
 
-#painel-status {
-    margin-top: 10px;
-    font-weight: bold;
+form {
     display: flex;
-    justify-content: center;
-    gap: 20px;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+    margin: 15px auto;
 }
 
-.mensagem-vitoria {
-    color: var(--cor-sucesso);
+input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
 }
 
-/* Tabuleiro estruturado com CSS Grid/Flexbox Responsivo */
+#btn-iniciar {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#painel-status {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
 #tabuleiro-jogo {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -88,10 +110,9 @@ main {
     width: 100%;
 }
 
-/* Estilo Individual das Cartas */
 .carta {
     height: 120px;
-    background-color: var(--cor-carta-fundo);
+    background-color: #1d3557;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
@@ -101,25 +122,31 @@ main {
     padding: 10px;
     font-size: 14px;
     font-weight: bold;
-    color: transparent; /* Esconde o texto inicialmente */
+    color: transparent;
     user-select: none;
-    transition: background-color 0.2s, color 0.2s;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* Estado da Carta quando é Selecionada ou Encontra o Par */
-.carta.virada, .carta.par-encontrado {
-    background-color: var(--cor-carta-virada);
+.carta.virada {
+    background-color: #a8dadc;
     color: #000000;
 }
 
 .carta.par-encontrado {
-    border: 3px solid var(--cor-sucesso);
+    background-color: #28a745;
+    color: #ffffff;
     cursor: default;
 }
 
 .oculto {
-    display: none;
+    display: none !important;
+}
+
+.mensagem-vitoria {
+    color: #28a745;
+    font-size: 18px;
+    display: block;
+    margin-top: 10px;
 }
 
 footer {
@@ -128,17 +155,13 @@ footer {
     background-color: #e2e2e2;
     color: #555;
     margin-top: auto;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.dark-mode footer {
-    background-color: #2c2c2c;
-    color: #aaa;
-}
-
-/* --- Aula 4: Responsividade Móvel --- */
 @media (max-width: 600px) {
     #tabuleiro-jogo {
-        grid-template-columns: repeat(2, 1fr); /* Vira 2 colunas em telas pequenas */
+        grid-template-columns: repeat(2, 1fr);
     }
     .carta {
         height: 100px;
