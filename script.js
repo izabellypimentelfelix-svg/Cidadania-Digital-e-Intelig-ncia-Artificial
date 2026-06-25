@@ -1,139 +1,159 @@
-// --- Dados do Jogo (Variáveis Estruturadas) ---
-const paresCartas = [
-    { id: 1, texto: "👁️ Olhar Fixo / Sem Piscar" },
-    { id: 1, texto: "🔍 Alerta de Deepfake Visual" },
-    { id: 2, texto: "🗣️ Voz Robótica / Sem Emoção" },
-    { id: 2, texto: "🎧 Alerta de Deepfake de Áudio" },
-    { id: 3, texto: "🧱 Fundo Borrado / Falhas" },
-    { id: 3, texto: "🖼️ Erro de Cenário por IA" },
-    { id: 4, texto: "📰 Notícia Muito Bombástica" },
-    { id: 4, texto: "🔗 Sempre Checar a Fonte" }
-];
+// Garante que o JavaScript só vai rodar APÓS o HTML carregar completamente na tela
+window.addEventListener('DOMContentLoaded', function() {
 
-// --- Mapeamento de Elementos do DOM ---
-const btnAcessibilidade = document.getElementById('btn-acessibilidade');
-const configForm = document.getElementById('config-form');
-const nomeJogadorInput = document.getElementById('nome-jogador');
-const painelStatus = document.getElementById('painel-status');
-const boasVindas = document.getElementById('boas-vindas');
-const contadorMovimentos = document.getElementById('contador-movimentos');
-const mensagemVitoria = document.getElementById('mensagem-vitoria');
-const tabuleiro = document.getElementById('tabuleiro-jogo');
+    // --- Dados do Jogo (Variáveis Estruturadas) ---
+    var paresCartas = [
+        { id: 1, texto: "👁️ Olhar Fixo / Sem Piscar" },
+        { id: 1, texto: "🔍 Alerta de Deepfake Visual" },
+        { id: 2, texto: "🗣️ Voz Robótica / Sem Emoção" },
+        { id: 2, texto: "🎧 Alerta de Deepfake de Áudio" },
+        { id: 3, texto: "🧱 Fundo Borrado / Falhas" },
+        { id: 3, texto: "🖼️ Erro de Cenário por IA" },
+        { id: 4, texto: "📰 Notícia Muito Bombástica" },
+        { id: 4, texto: "🔗 Sempre Checar a Fonte" }
+    ];
 
-// --- Variáveis de Controle de Estado (Critério Nível 4) ---
-let primeiraCarta = null;
-let segundaCarta = null;
-let movimentos = 0;
-let paresFeitos = 0;
-let bloqueiaTabuleiro = false;
+    // --- Mapeamento de Elementos do DOM ---
+    var btnAcessibilidade = document.getElementById('btn-acessibilidade');
+    var configForm = document.getElementById('config-form');
+    var nomeJogadorInput = document.getElementById('nome-jogador');
+    var painelStatus = document.getElementById('painel-status');
+    var boasVindas = document.getElementById('boas-vindas');
+    var contadorMovimentos = document.getElementById('contador-movimentos');
+    var mensagemVitoria = document.getElementById('mensagem-vitoria');
+    var tabuleiro = document.getElementById('tabuleiro-jogo');
 
-// --- 1. Modo Escuro (Acessibilidade) ---
-btnAcessibilidade.addEventListener('click', function() {
-    document.body.classList.toggle('dark-mode');
-});
+    // --- Variáveis de Controle de Estado (Exigência do Nível 4) ---
+    var primeiraCarta = null;
+    var segundaCarta = null;
+    var movimentos = 0;
+    var paresFeitos = 0;
+    var bloqueiaTabuleiro = false;
 
-// --- 2. Controle do Formulário Obrigatório ---
-configForm.addEventListener('submit', function(event) {
-    event.preventDefault(); // Impede o recarregamento da página
-    
-    const nome = nomeJogadorInput.value.trim();
-    boasVindas.textContent = `Investigador(a) ativo: ${nome}`;
-    
-    // Altera as classes do DOM para exibir o tabuleiro
-    configForm.classList.add('oculto');
-    painelStatus.classList.remove('oculto');
-    tabuleiro.classList.remove('oculto');
-    
-    inicializarTabuleiro();
-});
+    // --- 1. Modo Escuro (Acessibilidade) ---
+    if (btnAcessibilidade) {
+        btnAcessibilidade.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+    }
 
-// --- 3. Criar Cartas no Tabuleiro ---
-function inicializarTabuleiro() {
-    tabuleiro.innerHTML = ''; // Limpa resíduos do tabuleiro
-    
-    // Sorteio seguro das cartas
-    const cartasProntas = paresCartas.sort(function() {
-        return Math.random() - 0.5;
-    });
-    
-    cartasProntas.forEach(function(item, index) {
-        const elementoCarta = document.createElement('div');
-        elementoCarta.classList.add('carta');
-        elementoCarta.setAttribute('data-id', item.id);
-        elementoCarta.setAttribute('data-index', index);
-        elementoCarta.textContent = item.texto;
+    // --- 2. Controle do Formulário Obrigatório ---
+    if (configForm) {
+        configForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o recarregamento da página
+            
+            var nome = nomeJogadorInput.value.trim();
+            if (boasVindas) {
+                boasVindas.textContent = "Investigador(a) ativo: " + nome;
+            }
+            
+            // Transição visual mudando as classes no DOM
+            configForm.classList.add('oculto');
+            if (painelStatus) painelStatus.classList.remove('oculto');
+            if (tabuleiro) tabuleiro.classList.remove('oculto');
+            
+            inicializarTabuleiro();
+        });
+    }
+
+    // --- 3. Criar Cartas no Tabuleiro ---
+    function inicializarTabuleiro() {
+        if (!tabuleiro) return;
         
-        // Passa o elemento diretamente para a função de clique (evita o erro do 'this')
-        elementoCarta.addEventListener('click', function() {
-            tratarCliqueCarta(elementoCarta);
+        tabuleiro.innerHTML = ''; // Limpa o tabuleiro antes de começar
+        
+        // Embaralha o array usando um método simples e compatível
+        paresCartas.sort(function() {
+            return Math.random() - 0.5;
         });
         
-        tabuleiro.appendChild(elementoCarta);
-    });
-}
-
-// --- 4. Lógica de Clique Blindada contra Erros ---
-function tratarCliqueCarta(cartaClicada) {
-    // Se o tabuleiro estiver travado aguardando o tempo do erro, ignora o clique
-    if (bloqueiaTabuleiro) return;
-    
-    // Se clicar em uma carta que já foi acertada ou já está virada, ignora
-    if (cartaClicada.classList.contains('par-encontrado') || cartaClicada.classList.contains('virada')) return;
-
-    // Vira a carta visualmente
-    cartaClicada.classList.add('virada');
-
-    // Se for a primeira carta escolhida da rodada
-    if (primeiraCarta === null) {
-        primeiraCarta = cartaClicada;
-        return;
+        // Gera cada carta dinamicamente usando laço de repetição padrão
+        for (var i = 0; i < paresCartas.length; i++) {
+            var item = paresCartas[i];
+            
+            var elementoCarta = document.createElement('div');
+            elementoCarta.classList.add('carta');
+            elementoCarta.setAttribute('data-id', item.id);
+            elementoCarta.setAttribute('data-index', i);
+            elementoCarta.textContent = item.texto;
+            
+            // Evento de clique seguro repassando o elemento criado
+            configurarClique(elementoCarta);
+            
+            tabuleiro.appendChild(elementoCarta);
+        }
     }
 
-    // Se for a segunda carta escolhida da rodada
-    segundaCarta = cartaClicada;
-    
-    // Incrementa os movimentos na tela
-    movimentos++;
-    contadorMovimentos.textContent = `Movimentos realizados: ${movimentos}`;
-    
-    verificarPar();
-}
+    // Função auxiliar para evitar problemas de escopo de variáveis no clique
+    function configurarClique(carta) {
+        carta.addEventListener('click', function() {
+            tratarCliqueCarta(carta);
+        });
+    }
 
-// --- 5. Verificação de Acerto ou Erro ---
-function verificarPar() {
-    const id1 = primeiraCarta.getAttribute('data-id');
-    const id2 = segundaCarta.getAttribute('data-id');
-    
-    // Se os IDs guardados nos atributos forem iguais, acertou o par
-    if (id1 === id2) {
-        primeiraCarta.classList.remove('virada');
-        segundaCarta.classList.remove('virada');
+    // --- 4. Lógica de Clique Blindada contra Erros ---
+    function tratarCliqueCarta(cartaClicada) {
+        if (bloqueiaTabuleiro) return;
         
-        primeiraCarta.classList.add('par-encontrado');
-        segundaCarta.classList.add('par-encontrado');
-        
-        paresFeitos++;
-        resetarRodada();
-        
-        // Fim de jogo (4 pares encontrados)
-        if (paresFeitos === 4) {
-            mensagemVitoria.classList.remove('oculto');
+        // Evita clicar em cartas resolvidas ou na mesma carta duas vezes
+        if (cartaClicada.classList.contains('par-encontrado') || cartaClicada.classList.contains('virada')) return;
+
+        // Vira a carta visualmente na tela
+        cartaClicada.classList.add('virada');
+
+        // Primeira escolha da rodada
+        if (primeiraCarta === null) {
+            primeiraCarta = cartaClicada;
+            return;
         }
-    } else {
-        // Se errou, trava o jogo por 1 segundo e desvira as duas cartas
-        bloqueiaTabuleiro = true;
+
+        // Segunda escolha da rodada
+        segundaCarta = cartaClicada;
         
-        setTimeout(function() {
+        // Atualiza a quantidade de movimentos realizados
+        movimentos++;
+        if (contadorMovimentos) {
+            contadorMovimentos.textContent = "Movimentos realizados: " + movimentos;
+        }
+        
+        verificarPar();
+    }
+
+    // --- 5. Verificação de Acerto ou Erro ---
+    function verificarPar() {
+        var id1 = primeiraCarta.getAttribute('data-id');
+        var id2 = segundaCarta.getAttribute('data-id');
+        
+        if (id1 === id2) {
+            // Se acertou, marca as cartas como resolvidas permanentemente
             primeiraCarta.classList.remove('virada');
             segundaCarta.classList.remove('virada');
+            primeiraCarta.classList.add('par-encontrado');
+            segundaCarta.classList.add('par-encontrado');
+            
+            paresFeitos++;
             resetarRodada();
-        }, 1000);
+            
+            // Condição de Vitória (4 pares encontrados no total)
+            if (paresFeitos === 4 && mensagemVitoria) {
+                mensagemVitoria.classList.remove('oculto');
+            }
+        } else {
+            // Se errou, trava novos cliques por 1 segundo e depois desvira as duas cartas
+            bloqueiaTabuleiro = true;
+            
+            setTimeout(function() {
+                primeiraCarta.classList.remove('virada');
+                segundaCarta.classList.remove('virada');
+                resetarRodada();
+            }, 1000);
+        }
     }
-}
 
-// --- 6. Limpeza de Memória das Variáveis de Controle ---
-function resetarRodada() {
-    primeiraCarta = null;
-    segundaCarta = null;
-    bloqueiaTabuleiro = false;
-}
+    // --- 6. Limpeza de Variáveis de Controle ---
+    function resetarRodada() {
+        primeiraCarta = null;
+        segundaCarta = null;
+        bloqueiaTabuleiro = false;
+    }
+});
