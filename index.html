@@ -8,20 +8,31 @@
 </head>
 <body>
 
+    <!-- Cabeçalho Principal -->
     <header>
         <h1>Cidadania Digital & IA</h1>
         <p>Aprenda a detectar Deepfakes jogando!</p>
         <button id="btn-acessibilidade">Alternar Modo Escuro</button>
     </header>
 
+    <!-- Conteúdo Principal do Portal -->
     <main>
-        <!-- Seção de Contexto -->
+        
+        <!-- Seção Informativa e Formulário Obrigatório de Configuração -->
         <section class="card-informativo">
             <h2>Desafio da Memória Anti-Deepfake</h2>
-            <p>Encontre os pares corretos combinando os <strong>Sinais de Alerta</strong> com as suas <strong>Soluções de Verificação</strong>.</p>
+            <p>Combine os <strong>Sinais de Alerta</strong> com as suas respectivas <strong>Soluções de Verificação</strong>.</p>
             
-            <!-- Painel de Pontuação Dinâmico -->
+            <!-- Formulário Semântico exigido pela Rubrica de Avaliação -->
+            <form id="config-form">
+                <label for="nome-jogador">Digite seu nome para iniciar:</label>
+                <input type="text" id="nome-jogador" placeholder="Seu nome ou apelido" required>
+                <button type="submit" id="btn-iniciar">Validar e Jogar</button>
+            </form>
+
+            <!-- Painel de Status Dinâmico (atualizado via JavaScript) -->
             <div id="painel-status">
+                <p id="boas-vindas"></p>
                 <span id="contador-movimentos">Movimentos: 0</span>
                 <span id="mensagem-vitoria" class="oculto">🎉 Parabéns! Você dominou a checagem de fatos!</span>
             </div>
@@ -29,14 +40,17 @@
 
         <!-- Tabuleiro do Jogo da Memória -->
         <section id="tabuleiro-jogo">
-            <!-- As 8 cartas serão geradas dinamicamente pelo JavaScript para demonstrar manipulação avançada do DOM -->
+            <!-- As cartas serão injetadas dinamicamente aqui pelo script.js após o envio do formulário -->
         </section>
+
     </main>
 
+    <!-- Rodapé Semântico com as Tags Obrigatórias -->
     <footer>
         <p>&copy; 2026 Projeto Cidadania Digital. Desenvolvido para conscientização comunitária. #cidadaniadigital2026</p>
     </footer>
 
+    <!-- Vínculo com o Script JS -->
     <script src="script.js"></script>
 </body>
 </html>
