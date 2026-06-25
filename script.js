@@ -1,141 +1,127 @@
-// --- Dados do Jogo (Variáveis Estruturadas) ---
-var paresCartas = [
-    { id: 1, texto: "👁️ Olhar Fixo / Sem Piscar" },
-    { id: 1, texto: "🔍 Alerta de Deepfake Visual" },
-    { id: 2, texto: "🗣️ Voz Robótica / Sem Emoção" },
-    { id: 2, texto: "🎧 Alerta de Deepfake de Áudio" },
-    { id: 3, texto: "🧱 Fundo Borrado / Falhas" },
-    { id: 3, texto: "🖼️ Erro de Cenário por IA" },
-    { id: 4, texto: "📰 Notícia Muito Bombástica" },
-    { id: 4, texto: "🔗 Sempre Checar a Fonte" }
-];
+// Garante que o código só roda depois que o HTML estiver pronto na tela
+window.addEventListener('DOMContentLoaded', function() {
 
-// --- Mapeamento de Elementos do DOM ---
-var btnAcessibilidade = document.getElementById('btn-acessibilidade');
-var configForm = document.getElementById('config-form');
-var nomeJogadorInput = document.getElementById('nome-jogador');
-var painelStatus = document.getElementById('painel-status');
-var boasVindas = document.getElementById('boas-vindas');
-var contadorMovimentos = document.getElementById('contador-movimentos');
-var mensagemVitoria = document.getElementById('mensagem-vitoria');
-var tabuleiro = document.getElementById('tabuleiro-jogo');
+    var paresCartas = [
+        { id: 1, texto: "👁️ Olhar Fixo / Sem Piscar" },
+        { id: 1, texto: "🔍 Alerta de Deepfake Visual" },
+        { id: 2, texto: "🗣️ Voz Robótica / Sem Emoção" },
+        { id: 2, texto: "🎧 Alerta de Deepfake de Áudio" },
+        { id: 3, texto: "🧱 Fundo Borrado / Falhas" },
+        { id: 3, texto: "🖼️ Erro de Cenário por IA" },
+        { id: 4, texto: "📰 Notícia Muito Bombástica" },
+        { id: 4, texto: "🔗 Sempre Checar a Fonte" }
+    ];
 
-// --- Variáveis de Controle de Estado ---
-var primeiraCarta = null;
-var segundaCarta = null;
-var movimentos = 0;
-var paresFeitos = 0;
-var bloqueiaTabuleiro = false;
+    var btnAcessibilidade = document.getElementById('btn-acessibilidade');
+    var configForm = document.getElementById('config-form');
+    var nomeJogadorInput = document.getElementById('nome-jogador');
+    var painelStatus = document.getElementById('painel-status');
+    var boasVindas = document.getElementById('boas-vindas');
+    var contadorMovimentos = document.getElementById('contador-movimentos');
+    var mensagemVitoria = document.getElementById('mensagem-vitoria');
+    var tabuleiro = document.getElementById('tabuleiro-jogo');
 
-// --- Algoritmo de Embaralhar Seguro (Fisher-Yates) ---
-function embaralharSeguro(array) {
-    var copia = array.slice(0); // Cria uma cópia limpa na memória sem alterar o original
-    var indiceAtual = copia.length, valorTemporario, indiceAleatorio;
-    while (0 !== indiceAtual) {
-        indiceAleatorio = Math.floor(Math.random() * indiceAtual);
-        indiceAtual -= 1;
-        valorTemporario = copia[indiceAtual];
-        copia[indiceAtual] = copia[indiceAleatorio];
-        copia[indiceAleatorio] = valorTemporario;
+    var primeiraCarta = null;
+    var segundaCarta = null;
+    var movimentos = 0;
+    var paresFeitos = 0;
+    var bloqueiaTabuleiro = false;
+
+    // Ação do Modo Escuro
+    if (btnAcessibilidade) {
+        btnAcessibilidade.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+        });
     }
-    return copia;
-}
 
-// --- 1. Modo Escuro (Acessibilidade) ---
-if (btnAcessibilidade) {
-    btnAcessibilidade.addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
-    });
-}
-
-// --- 2. Controle do Formulário Obrigatório ---
-if (configForm) {
-    configForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Evita recarregar a página
-        
-        var nome = nomeJogadorInput.value.trim();
-        if (boasVindas) {
-            boasVindas.textContent = "Investigador(a) ativo: " + nome;
-        }
-        
-        configForm.classList.add('oculto');
-        if (painelStatus) painelStatus.classList.remove('oculto');
-        if (tabuleiro) tabuleiro.classList.remove('oculto');
-        
-        inicializarTabuleiro();
-    });
-}
-
-// --- 3. Criar Cartas no Tabuleiro ---
-function inicializarTabuleiro() {
-    if (!tabuleiro) return;
-    tabuleiro.innerHTML = ''; // Limpa completamente o tabuleiro anterior
-    
-    // Obtém o array embaralhado de forma segura
-    var cartasProntas = embaralharSeguro(paresCartas);
-    
-    for (var i = 0; i < cartasProntas.length; i++) {
-        var item = cartasProntas[i];
-        
-        var elementoCarta = document.createElement('div');
-        elementoCarta.classList.add('carta');
-        elementoCarta.setAttribute('data-id', item.id);
-        elementoCarta.textContent = item.texto;
-        
-        configurarClique(elementoCarta);
-        tabuleiro.appendChild(elementoCarta);
+    // Ação do Formulário para Iniciar o Jogo
+    if (configForm) {
+        configForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            var nome = nomeJogadorInput.value.trim();
+            if (boasVindas) {
+                boasVindas.textContent = "Investigador(a) ativo: " + nome;
+            }
+            
+            configForm.classList.add('oculto');
+            if (painelStatus) painelStatus.classList.remove('oculto');
+            if (tabuleiro) tabuleiro.classList.remove('oculto');
+            
+            inicializarTabuleiro();
+        });
     }
-}
 
-// --- 4. Lógica de Clique Individual ---
-function configurarClique(carta) {
-    carta.addEventListener('click', function() {
-        if (bloqueiaTabuleiro) return;
-        if (carta.classList.contains('par-encontrado') || carta.classList.contains('virada')) return;
-
-        carta.classList.add('virada');
-
-        if (primeiraCarta === null) {
-            primeiraCarta = carta;
-            return;
-        }
-
-        segundaCarta = carta;
-        movimentos++;
-        if (contadorMovimentos) {
-            contadorMovimentos.textContent = "Movimentos realizados: " + movimentos;
-        }
+    function inicializarTabuleiro() {
+        if (!tabuleiro) return;
+        tabuleiro.innerHTML = '';
         
-        verificarPar();
-    });
-}
-
-// --- 5. Verificação de Acerto ou Erro ---
-function verificarPar() {
-    var id1 = primeiraCarta.getAttribute('data-id');
-    var id2 = segundaCarta.getAttribute('data-id');
-    
-    if (id1 === id2) {
-        primeiraCarta.classList.remove('virada');
-        segundaCarta.classList.remove('virada');
-        primeiraCarta.classList.add('par-encontrado');
-        segundaCarta.classList.add('par-encontrado');
+        // Embaralhar seguro
+        paresCartas.sort(function() {
+            return Math.random() - 0.5;
+        });
         
-        paresFeitos++;
-        primeiraCarta = null;
-        segundaCarta = null;
-        
-        if (paresFeitos === 4 && mensagemVitoria) {
-            mensagemVitoria.classList.remove('oculto');
+        for (var i = 0; i < paresCartas.length; i++) {
+            var item = paresCartas[i];
+            
+            var elementoCarta = document.createElement('div');
+            elementoCarta.classList.add('carta');
+            elementoCarta.setAttribute('data-id', item.id);
+            elementoCarta.textContent = item.texto;
+            
+            configurarClique(elementoCarta);
+            tabuleiro.appendChild(elementoCarta);
         }
-    } else {
-        bloqueiaTabuleiro = true;
-        setTimeout(function() {
+    }
+
+    function configurarClique(carta) {
+        carta.addEventListener('click', function() {
+            if (bloqueiaTabuleiro) return;
+            if (carta.classList.contains('par-encontrado') || carta.classList.contains('virada')) return;
+
+            carta.classList.add('virada');
+
+            if (primeiraCarta === null) {
+                primeiraCarta = carta;
+                return;
+            }
+
+            segundaCarta = carta;
+            movimentos++;
+            if (contadorMovimentos) {
+                contadorMovimentos.textContent = "Movimentos realizados: " + movimentos;
+            }
+            
+            verificarPar();
+        });
+    }
+
+    function verificarPar() {
+        var id1 = primeiraCarta.getAttribute('data-id');
+        var id2 = segundaCarta.getAttribute('data-id');
+        
+        if (id1 === id2) {
             primeiraCarta.classList.remove('virada');
             segundaCarta.classList.remove('virada');
+            primeiraCarta.classList.add('par-encontrado');
+            segundaCarta.classList.add('par-encontrado');
+            
+            paresFeitos++;
             primeiraCarta = null;
             segundaCarta = null;
-            bloqueiaTabuleiro = false;
-        }, 1000);
+            
+            if (paresFeitos === 4 && mensagemVitoria) {
+                mensagemVitoria.classList.remove('oculto');
+            }
+        } else {
+            bloqueiaTabuleiro = true;
+            setTimeout(function() {
+                primeiraCarta.classList.remove('virada');
+                segundaCarta.classList.remove('virada');
+                primeiraCarta = null;
+                segundaCarta = null;
+                bloqueiaTabuleiro = false;
+            }, 1000);
+        }
     }
-}
+});
