@@ -20,25 +20,21 @@ const contadorMovimentos = document.getElementById('contador-movimentos');
 const mensagemVitoria = document.getElementById('mensagem-vitoria');
 const tabuleiro = document.getElementById('tabuleiro-jogo');
 
-// --- Variáveis de Controle de Estado (Requisito Nível 4) ---
-let cartasViradas = [];
+// --- Variáveis de Controle de Estado (Critério Nível 4) ---
+let primeiraCarta = null;
+let segundaCarta = null;
 let movimentos = 0;
 let paresFeitos = 0;
 let bloqueiaTabuleiro = false;
-
-// --- Algoritmo de Embaralhar Seguro ---
-function embaralhar(array) {
-    return array.sort(() => Math.random() - 0.5);
-}
 
 // --- 1. Modo Escuro (Acessibilidade) ---
 btnAcessibilidade.addEventListener('click', function() {
     document.body.classList.toggle('dark-mode');
 });
 
-// --- 2. Controle do Formulário ---
+// --- 2. Controle do Formulário Obrigatório ---
 configForm.addEventListener('submit', function(event) {
-    event.preventDefault(); // Impede o envio real e recarregamento
+    event.preventDefault(); // Impede o recarregamento da página
     
     const nome = nomeJogadorInput.value.trim();
     boasVindas.textContent = `Investigador(a) ativo: ${nome}`;
@@ -53,72 +49,91 @@ configForm.addEventListener('submit', function(event) {
 
 // --- 3. Criar Cartas no Tabuleiro ---
 function inicializarTabuleiro() {
-    tabuleiro.innerHTML = ''; // Limpa o tabuleiro anterior
+    tabuleiro.innerHTML = ''; // Limpa resíduos do tabuleiro
     
-    // Duplica e embaralha o array de cartas
-    const cartasProntas = embaralhar([...paresCartas]);
+    // Sorteio seguro das cartas
+    const cartasProntas = paresCartas.sort(function() {
+        return Math.random() - 0.5;
+    });
     
     cartasProntas.forEach(function(item, index) {
         const elementoCarta = document.createElement('div');
         elementoCarta.classList.add('carta');
-        elementoCarta.dataset.id = item.id;
-        elementoCarta.dataset.index = index; // Guarda a posição física da carta
+        elementoCarta.setAttribute('data-id', item.id);
+        elementoCarta.setAttribute('data-index', index);
         elementoCarta.textContent = item.texto;
         
-        // Adiciona o clique em cada uma delas
-        elementoCarta.addEventListener('click', virarCarta);
+        // Passa o elemento diretamente para a função de clique (evita o erro do 'this')
+        elementoCarta.addEventListener('click', function() {
+            tratarCliqueCarta(elementoCarta);
+        });
+        
         tabuleiro.appendChild(elementoCarta);
     });
 }
 
-// --- 4. Lógica do Clique na Carta (CORRIGIDO) ---
-function virarCarta() {
+// --- 4. Lógica de Clique Blindada contra Erros ---
+function tratarCliqueCarta(cartaClicada) {
+    // Se o tabuleiro estiver travado aguardando o tempo do erro, ignora o clique
     if (bloqueiaTabuleiro) return;
     
-    // Impede clicar em cartas já resolvidas ou já viradas
-    if (this.classList.contains('virada') || this.classList.contains('par-encontrado')) return;
+    // Se clicar em uma carta que já foi acertada ou já está virada, ignora
+    if (cartaClicada.classList.contains('par-encontrado') || cartaClicada.classList.contains('virada')) return;
 
-    // CORREÇÃO DO ERRO: Verifica corretamente usando o índice [0] do array
-    if (cartasViradas.length === 1 && cartasViradas[0].dataset.index === this.dataset.index) return;
+    // Vira a carta visualmente
+    cartaClicada.classList.add('virada');
 
-    this.classList.add('virada');
-    cartasViradas.push(this);
-
-    // Se virou duas cartas, faz a validação
-    if (cartasViradas.length === 2) {
-        movimentos++;
-        contadorMovimentos.textContent = `Movimentos realizados: ${movimentos}`;
-        verificarPar();
+    // Se for a primeira carta escolhida da rodada
+    if (primeiraCarta === null) {
+        primeiraCarta = cartaClicada;
+        return;
     }
+
+    // Se for a segunda carta escolhida da rodada
+    segundaCarta = cartaClicada;
+    
+    // Incrementa os movimentos na tela
+    movimentos++;
+    contadorMovimentos.textContent = `Movimentos realizados: ${movimentos}`;
+    
+    verificarPar();
 }
 
 // --- 5. Verificação de Acerto ou Erro ---
 function verificarPar() {
-    const carta1 = cartasViradas[0];
-    const carta2 = cartasViradas[1];
+    const id1 = primeiraCarta.getAttribute('data-id');
+    const id2 = segundaCarta.getAttribute('data-id');
     
-    // Se os IDs guardados no HTML forem iguais, acertou o par
-    if (carta1.dataset.id === carta2.dataset.id) {
-        carta1.classList.remove('virada');
-        carta2.classList.remove('virada');
-        carta1.classList.add('par-encontrado');
-        carta2.classList.add('par-encontrado');
+    // Se os IDs guardados nos atributos forem iguais, acertou o par
+    if (id1 === id2) {
+        primeiraCarta.classList.remove('virada');
+        segundaCarta.classList.remove('virada');
+        
+        primeiraCarta.classList.add('par-encontrado');
+        segundaCarta.classList.add('par-encontrado');
         
         paresFeitos++;
-        cartasViradas = []; // Reseta a lista de viradas
+        resetarRodada();
         
         // Fim de jogo (4 pares encontrados)
         if (paresFeitos === 4) {
             mensagemVitoria.classList.remove('oculto');
         }
     } else {
-        // Se errou, trava o jogo por 1 segundo e desvira as cartas
+        // Se errou, trava o jogo por 1 segundo e desvira as duas cartas
         bloqueiaTabuleiro = true;
+        
         setTimeout(function() {
-            carta1.classList.remove('virada');
-            carta2.classList.remove('virada');
-            cartasViradas = [];
-            bloqueiaTabuleiro = false;
+            primeiraCarta.classList.remove('virada');
+            segundaCarta.classList.remove('virada');
+            resetarRodada();
         }, 1000);
     }
+}
+
+// --- 6. Limpeza de Memória das Variáveis de Controle ---
+function resetarRodada() {
+    primeiraCarta = null;
+    segundaCarta = null;
+    bloqueiaTabuleiro = false;
 }
