@@ -4,53 +4,300 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Cidadania Digital: Jogo da Memória IA</title>
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- CSS INTEGRADO (Estilização e Layout Flexbox/Grid) -->
+    <style>
+        :root {
+            --cor-fundo: #f4f7f6;
+            --cor-texto: #333333;
+            --cor-primaria: #007bff;
+            --cor-card: #ffffff;
+            --cor-carta-fundo: #1d3557;
+            --cor-carta-virada: #a8dadc;
+            --cor-sucesso: #28a745;
+            --cor-erro: #dc3545;
+        }
+
+        /* Classe para o Modo Escuro */
+        .dark-mode {
+            --cor-fundo: #121212;
+            --cor-texto: #ffffff;
+            --cor-primaria: #bb86fc;
+            --cor-card: #1e1e1e;
+            --cor-carta-fundo: #3700b3;
+            --cor-carta-virada: #03dac6;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        header {
+            background-color: var(--cor-primaria);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #btn-acessibilidade {
+            margin-top: 10px;
+            padding: 8px 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .card-informativo {
+            background-color: var(--cor-card);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        /* Estilo do Formulário */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+            margin: 15px auto;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #btn-iniciar {
+            padding: 10px;
+            background-color: var(--cor-primaria);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #painel-status {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        /* Tabuleiro com CSS Grid */
+        #tabuleiro-jogo {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            width: 100%;
+        }
+
+        /* Cartas do Jogo */
+        .carta {
+            height: 120px;
+            background-color: var(--cor-carta-fundo);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: transparent; /* Texto oculto no início */
+            user-select: none;
+            transition: background-color 0.2s, color 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Estados da Carta */
+        .carta.virada {
+            background-color: var(--cor-carta-virada);
+            color: #000000;
+        }
+
+        .carta.par-encontrado {
+            background-color: var(--cor-sucesso);
+            color: #ffffff;
+            cursor: default;
+        }
+
+        .oculto {
+            display: none !important;
+        }
+
+        .mensagem-vitoria {
+            color: var(--cor-sucesso);
+            font-size: 18px;
+            display: block;
+            margin-top: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #e2e2e2;
+            color: #555;
+            margin-top: auto;
+        }
+
+        .dark-mode footer {
+            background-color: #2c2c2c;
+            color: #aaa;
+        }
+
+        /* Responsividade para Celulares */
+        @media (max-width: 600px) {
+            #tabuleiro-jogo {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .carta {
+                height: 100px;
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Cabeçalho Principal -->
     <header>
         <h1>Cidadania Digital & IA</h1>
         <p>Aprenda a detectar Deepfakes jogando!</p>
         <button id="btn-acessibilidade">Alternar Modo Escuro</button>
     </header>
 
-    <!-- Conteúdo Principal do Portal -->
     <main>
-        
-        <!-- Seção Informativa e Formulário Obrigatório de Configuração -->
         <section class="card-informativo">
             <h2>Desafio da Memória Anti-Deepfake</h2>
-            <p>Combine os <strong>Sinais de Alerta</strong> com as suas respectivas <strong>Soluções de Verificação</strong>.</p>
+            <p>Insira seu nome para liberar o tabuleiro e combinar os <strong>Sinais de Alerta</strong> com as suas <strong>Soluções de Verificação</strong>.</p>
             
-            <!-- Formulário Semântico exigido pela Rubrica de Avaliação -->
+            <!-- FORMULÁRIO SEMÂNTICO (Exigência da subcategoria A) -->
             <form id="config-form">
-                <label for="nome-jogador">Digite seu nome para iniciar:</label>
-                <input type="text" id="nome-jogador" placeholder="Seu nome ou apelido" required>
-                <button type="submit" id="btn-iniciar">Validar e Jogar</button>
+                <label for="nome-jogador">Nome do Investigador:</label>
+                <input type="text" id="nome-jogador" placeholder="Seu nome..." required>
+                <button type="submit" id="btn-iniciar">Validar e Iniciar Jogo</button>
             </form>
 
-            <!-- Painel de Status Dinâmico (atualizado via JavaScript) -->
-            <div id="painel-status">
+            <!-- Painel de Status -->
+            <div id="painel-status" class="oculto">
                 <p id="boas-vindas"></p>
-                <span id="contador-movimentos">Movimentos: 0</span>
-                <span id="mensagem-vitoria" class="oculto">🎉 Parabéns! Você dominou a checagem de fatos!</span>
+                <p id="contador-movimentos">Movimentos realizados: 0</p>
+                <p id="mensagem-vitoria" class="oculto mensagem-vitoria">🎉 Parabéns! Você aprendeu a identificar mídias manipuladas por IA!</p>
             </div>
         </section>
 
-        <!-- Tabuleiro do Jogo da Memória -->
-        <section id="tabuleiro-jogo">
-            <!-- As cartas serão injetadas dinamicamente aqui pelo script.js após o envio do formulário -->
-        </section>
-
+        <!-- Tabuleiro onde o JS injeta os elementos -->
+        <section id="tabuleiro-jogo" class="oculto"></section>
     </main>
 
-    <!-- Rodapé Semântico com as Tags Obrigatórias -->
     <footer>
         <p>&copy; 2026 Projeto Cidadania Digital. Desenvolvido para conscientização comunitária. #cidadaniadigital2026</p>
     </footer>
 
-    <!-- Vínculo com o Script JS -->
-    <script src="script.js"></script>
-</body>
-</html>
+    <!-- JAVASCRIPT INTEGRADO (Lógica e Manipulação Dinâmica do DOM) -->
+    <script>
+        // Dados do Jogo (Objetos estruturados em variáveis)
+        const paresCartas = [
+            { id: 1, texto: "👁️ Olhar Fixo / Sem Piscar" },
+            { id: 1, texto: "🔍 Alerta de Deepfake Visual" },
+            { id: 2, texto: "🗣️ Voz Robótica / Sem Emoção" },
+            { id: 2, texto: "🎧 Alerta de Deepfake de Áudio" },
+            { id: 3, texto: "🧱 Fundo Borrado / Falhas" },
+            { id: 3, texto: "🖼️ Erro de Cenário por IA" },
+            { id: 4, texto: "📰 Notícia Muito Bombástica" },
+            { id: 4, texto: "🔗 Sempre Checar a Fonte" }
+        ];
+
+        // Elementos mapeados do DOM
+        const btnAcessibilidade = document.getElementById('btn-acessibilidade');
+        const configForm = document.getElementById('config-form');
+        const nomeJogadorInput = document.getElementById('nome-jogador');
+        const painelStatus = document.getElementById('painel-status');
+        const boasVindas = document.getElementById('boas-vindas');
+        const contadorMovimentos = document.getElementById('contador-movimentos');
+        const mensagemVitoria = document.getElementById('mensagem-vitoria');
+        const tabuleiro = document.getElementById('tabuleiro-jogo');
+
+        // Variáveis de controle de fluxo
+        let cartasViradas = [];
+        let movimentos = 0;
+        let paresFeitos = 0;
+        let bloqueiaTabuleiro = false;
+
+        // 1. Controle do Modo Escuro
+        btnAcessibilidade.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // 2. Controle do Envio do Formulário (Validação Obrigatória)
+        configForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Impede recarregamento da tela
+            
+            const nome = nomeJogadorInput.value;
+            boasVindas.textContent = `Investigador(a) ativo: ${nome}`;
+            
+            // Oculta o formulário e exibe o jogo na tela alterando classes do DOM
+            configForm.classList.add('oculto');
+            painelStatus.classList.remove('oculto');
+            tabuleiro.classList.remove('oculto');
+            
+            inicializarTabuleiro();
+        });
+
+        // 3. Criação Dinâmica do Tabuleiro
+        function inicializarTabuleiro() {
+            // Embaralha os cards de forma randômica antes de renderizar
+            const embaralhado = paresCartas.sort(() => Math.random() - 0.5);
+            
+            embaralhado.forEach(item => {
+                const elementoCarta = document.createElement('div');
+                elementoCarta.classList.add('carta');
+                elementoCarta.dataset.id = item.id;
+                elementoCarta.textContent = item.texto;
+                
+                // Escutador de clique individual para cada carta criada
+                elementoCarta.addEventListener('click', virarCarta);
+                tabuleiro.appendChild(elementoCarta);
+            });
+        }
+
+        // 4. Lógica de Clique e Virada de Cartas
+        function virarCarta() {
+            if (bloqueiaTabuleiro) return;
+            if (this.classList.contains('virada') || this.classList.contains('par-encontrado')) return;
+
+            this.classList.add('virada');
+            cartasViradas.push(this);
+
+            if (cartasViradas.length === 2) {
+                movimentos++;
+                contadorMovimentos.textContent = `Movimentos realizados: ${movimentos}`;
+                verificarPar();
+            }
