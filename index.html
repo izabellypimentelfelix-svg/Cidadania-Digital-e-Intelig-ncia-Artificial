@@ -4,7 +4,180 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Cidadania Digital: Jogo da Memória IA</title>
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- ==================== CSS INTEGRADO ==================== -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* --- ESTILO DO MODO ESCURO (CORRIGIDO) --- */
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        body.dark-mode .card-informativo {
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+        body.dark-mode footer {
+            background-color: #2c2c2c;
+            color: #aaa;
+        }
+        body.dark-mode .carta {
+            background-color: #3700b3;
+        }
+        body.dark-mode .carta.virada {
+            background-color: #03dac6;
+            color: #000000;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #btn-acessibilidade {
+            margin-top: 10px;
+            padding: 8px 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #007bff;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .card-informativo {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+            margin: 15px auto;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        #btn-iniciar {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #painel-status {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        #tabuleiro-jogo {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            width: 100%;
+        }
+
+        .carta {
+            height: 120px;
+            background-color: #1d3557;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: transparent;
+            user-select: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .carta.virada {
+            background-color: #a8dadc;
+            color: #000000;
+        }
+
+        .carta.par-encontrado {
+            background-color: #28a745;
+            color: #ffffff;
+            cursor: default;
+        }
+
+        .oculto {
+            display: none !important;
+        }
+
+        .mensagem-vitoria {
+            color: #28a745;
+            font-size: 18px;
+            display: block;
+            margin-top: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #e2e2e2;
+            color: #555;
+            margin-top: auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 600px) {
+            #tabuleiro-jogo {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .carta {
+                height: 100px;
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -22,7 +195,7 @@
             <!-- FORMULÁRIO SEMÂNTICO EXIGIDO -->
             <form id="config-form">
                 <label for="nome-jogador">Nome do Investigador:</label>
-                <input type="text" id="nome-jogador" placeholder="Seu nome..." required>
+                <input type="text" id="text-nome-jogador" placeholder="Seu nome..." required>
                 <button type="submit" id="btn-iniciar">Validar e Iniciar Jogo</button>
             </form>
 
@@ -40,7 +213,91 @@
         <p>&copy; 2026 Projeto Cidadania Digital. Desenvolvido para conscientização comunitária. #cidadaniadigital2026</p>
     </footer>
 
-    <!-- VÍNCULO CORRETO COM O SCRIPT -->
-    <script src="script.js"></script>
-</body>
-</html>
+    <!-- ==================== JAVASCRIPT INTEGRADO ==================== -->
+    <script>
+        // Lógica encapsulada e autoexecutável para garantir carregamento instantâneo
+        (function() {
+            var pairs = [
+                { id: 1, text: "👁️ Olhar Fixo / Sem Piscar" },
+                { id: 1, text: "🔍 Alerta de Deepfake Visual" },
+                { id: 2, text: "🗣️ Voz Robótica / Sem Emoção" },
+                { id: 2, text: "🎧 Alerta de Deepfake de Áudio" },
+                { id: 3, text: "🧱 Fundo Borrado / Falhas" },
+                { id: 3, text: "🖼️ Erro de Cenário por IA" },
+                { id: 4, text: "📰 Notícia Muito Bombástica" },
+                { id: 4, text: "🔗 Sempre Checar a Fonte" }
+            ];
+
+            var firstCard = null;
+            var secondCard = null;
+            var moves = 0;
+            var matches = 0;
+            var lockBoard = false;
+
+            // Vinculação direta das funções aos IDs quando o script é lido
+            window.onload = function() {
+                var btnTheme = document.getElementById('btn-acessibilidade');
+                var formSetup = document.getElementById('config-form');
+                var inputName = document.getElementById('text-nome-jogador');
+                var statusPanel = document.getElementById('painel-status');
+                var welcomeTxt = document.getElementById('boas-vindas');
+                var txtMoves = document.getElementById('contador-movimentos');
+                var winMsg = document.getElementById('mensagem-vitoria');
+                var gridBoard = document.getElementById('tabuleiro-jogo');
+
+                if (btnTheme) {
+                    btnTheme.onclick = function() {
+                        document.body.classList.toggle('dark-mode');
+                    };
+                }
+
+                if (formSetup) {
+                    formSetup.onsubmit = function(e) {
+                        e.preventDefault();
+                        var player = inputName.value.trim();
+                        if (welcomeTxt) welcomeTxt.textContent = "Investigador(a) ativo: " + player;
+                        
+                        formSetup.classList.add('oculto');
+                        if (statusPanel) statusPanel.classList.remove('oculto');
+                        if (gridBoard) gridBoard.classList.remove('oculto');
+                        
+                        buildBoard(gridBoard, txtMoves, winMsg);
+                    };
+                }
+            };
+
+            function buildBoard(board, movesEl, winEl) {
+                board.innerHTML = '';
+                
+                // Algoritmo clássico de sorteio em linha
+                pairs.sort(function() { return Math.random() - 0.5; });
+
+                for (var i = 0; i < pairs.length; i++) {
+                    var item = pairs[i];
+                    var cardEl = document.createElement('div');
+                    cardEl.className = 'carta';
+                    cardEl.setAttribute('data-id', item.id);
+                    cardEl.textContent = item.text;
+                    
+                    attachCardClick(cardEl, board, movesEl, winEl);
+                    board.appendChild(cardEl);
+                }
+            }
+
+            function attachCardClick(card, board, movesEl, winEl) {
+                card.onclick = function() {
+                    if (lockBoard) return;
+                    if (card.classList.contains('par-encontrado') || card.classList.contains('virada')) return;
+
+                    card.classList.add('virada');
+
+                    if (firstCard === null) {
+                        firstCard = card;
+                        return;
+                    }
+
+                    secondCard = card;
+                    moves++;
+                    if (movesEl) movesEl.textContent = "Movimentos realizados: " + moves;
+                    
+                    checkMatch(movesEl, winEl);
