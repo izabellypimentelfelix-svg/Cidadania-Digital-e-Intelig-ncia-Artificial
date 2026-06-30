@@ -217,3 +217,113 @@ body.dark-mode .carta.par-encontrado {
         font-size: 22px;
     }
 }
+:root {
+    --primary-color: #2563eb;
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-color: #1e293b;
+    --success: #16a34a;
+    --danger: #dc2626;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header {
+    text-align: center;
+    background-color: var(--primary-color);
+    color: white;
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.game-container {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.content-box {
+    min-height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f1f5f9;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.content-box img {
+    max-width: 100%;
+    max-height: 250px;
+    border-radius: 4px;
+}
+
+.buttons-container {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.btn-real { background-color: var(--success); color: white; }
+.btn-ia { background-color: var(--primary-color); color: white; }
+
+.next-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.btn-next { 
+    background-color: #475569; 
+    color: white; 
+    display: none; 
+}
+
+.feedback {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 6px;
+    display: none;
+    font-weight: 500;
+    text-align: left;
+}
+
+.score-board {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
