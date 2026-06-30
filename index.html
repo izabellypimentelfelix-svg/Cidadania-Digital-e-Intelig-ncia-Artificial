@@ -1,367 +1,166 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Cidadania Digital: Jogo da Memória IA</title>
-    
-    <!-- CSS INTEGRADO -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
-            color: #333333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            transition: background 0.3s, color 0.3s;
-        }
+/* Variáveis de Cores e Estilos Globais */
+:root {
+    --cor-fundo: #f4f7f6;
+    --cor-card: #ffffff;
+    --cor-texto: #2c3e50;
+    --cor-primaria: #2980b9;
+    --cor-sucesso: #27ae60;
+    --cor-destaque: #e74c3c;
+}
 
-        body.dark-mode {
-            background-color: #121212;
-            color: #ffffff;
-        }
-        body.dark-mode .card-informativo {
-            background-color: #1e1e1e;
-            color: #ffffff;
-        }
-        body.dark-mode footer {
-            background-color: #2c2c2c;
-            color: #aaa;
-        }
-        body.dark-mode .carta {
-            background-color: #3700b3;
-        }
-        body.dark-mode .carta.virada {
-            background-color: #03dac6;
-            color: #000000;
-        }
+body.dark-mode {
+    --cor-fundo: #1a252f;
+    --cor-card: #2c3e50;
+    --cor-texto: #ecf0f1;
+    --cor-primaria: #3498db;
+}
 
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-        #btn-acessibilidade {
-            margin-top: 10px;
-            padding: 8px 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            background-color: #ffffff;
-            color: #007bff;
-        }
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    transition: background 0.3s, color 0.3s;
+    line-height: 1.6;
+}
 
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
-            box-sizing: border-box;
-        }
+/* Header */
+header {
+    background-color: var(--cor-primaria);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+}
 
-        .card-informativo {
-            background-color: #ffffff;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 100%;
-            text-align: center;
-            box-sizing: border-box;
-        }
+.btn-acessibilidade {
+    margin-top: 10px;
+    padding: 8px 15px;
+    cursor: pointer;
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-width: 400px;
-            margin: 15px auto;
-        }
+/* Layout Geral com Flexbox */
+main {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
 
-        input[type="text"] {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            text-align: center;
-        }
+section {
+    background: var(--cor-card);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
 
-        #btn-iniciar {
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+/* Mecânica do Jogo da Memória */
+.placar {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
 
-        #painel-status {
-            margin-top: 15px;
-            font-weight: bold;
-        }
+.grid-memoria {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
 
-        #tabuleiro-jogo {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            width: 100%;
-        }
+.card-memoria {
+    width: calc(50% - 10px);
+    height: 100px;
+    background-color: var(--cor-primaria);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s, background-color 0.2s;
+}
 
-        .carta {
-            height: 120px;
-            background-color: #1d3557;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 10px;
-            font-size: 14px;
-            font-weight: bold;
-            color: transparent;
-            user-select: none;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
+.card-memoria.virado {
+    background-color: var(--cor-sucesso);
+}
 
-        .carta.virada {
-            background-color: #a8dadc;
-            color: #000000;
-        }
+.card-memoria.par-encontrado {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
 
-        .carta.par-encontrado {
-            background-color: #28a745;
-            color: #ffffff;
-            cursor: default;
-        }
+/* Formulários */
+.grupo-campo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
 
-        .oculto {
-            display: none !important;
-        }
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
 
-        .mensagem-vitoria {
-            color: #28a745;
-            font-size: 18px;
-            display: block;
-            margin-top: 10px;
-        }
+input, textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: var(--cor-card);
+    color: var(--cor-texto);
+}
 
-        footer {
-            text-align: center;
-            padding: 15px;
-            background-color: #e2e2e2;
-            color: #555;
-            margin-top: auto;
-            width: 100%;
-            box-sizing: border-box;
-        }
+form button {
+    background-color: var(--cor-primaria);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 100%;
+}
 
-        @media (max-width: 600px) {
-            #tabuleiro-jogo {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .carta {
-                height: 100px;
-                font-size: 12px;
-            }
-        }
-    </style>
-</head>
-<body>
+.escondido {
+    display: none;
+}
 
-    <header>
-        <h1>Cidadania Digital & IA</h1>
-        <p>Aprenda a detectar Deepfakes jogando!</p>
-        <button id="btn-acessibilidade">Alternar Modo Escuro</button>
-    </header>
+#feedback-formulario {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: var(--cor-sucesso);
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+}
 
-    <main>
-        <section class="card-informativo">
-            <h2>Desafio da Memória Anti-Deepfake</h2>
-            <p>Insira seu nome para liberar o tabuleiro e combinar os <strong>Sinais de Alerta</strong> com as suas <strong>Soluções de Verificação</strong>.</p>
-            
-            <form id="config-form">
-                <label for="text-nome-jogador">Nome do Investigador:</label>
-                <input type="text" id="text-nome-jogador" placeholder="Seu nome..." required>
-                <button type="submit" id="btn-iniciar">Validar e Iniciar Jogo</button>
-            </form>
+/* Rodapé */
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+}
 
-            <div id="painel-status" class="oculto">
-                <p id="boas-vindas"></p>
-                <p id="contador-movimentos">Movimentos realizados: 0</p>
-                <p id="mensagem-vitoria" class="oculto mensagem-vitoria">🎉 Parabéns! Você aprendeu a identificar mídias manipuladas por IA!</p>
-            </div>
-        </section>
-
-        <section id="tabuleiro-jogo" class="oculto"></section>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 Projeto Cidadania Digital. Desenvolvido para conscientização comunitária. #cidadaniadigital2026</p>
-    </footer>
-
-    <!-- JAVASCRIPT PLANO (Execução Imediata Sem Espera) -->
-    <script>
-        var pairs = [
-            { id: 1, text: "👁️ Olhar Fixo / Sem Piscar" },
-            { id: 1, text: "🔍 Alerta de Deepfake Visual" },
-            { id: 2, text: "🗣️ Voz Robótica / Sem Emoção" },
-            { id: 2, text: "🎧 Alerta de Deepfake de Áudio" },
-            { id: 3, text: "🧱 Fundo Borrado / Falhas" },
-            { id: 3, text: "🖼️ Erro de Cenário por IA" },
-            { id: 4, text: "📰 Notícia Muito Bombástica" },
-            { id: 4, text: "🔗 Sempre Checar a Fonte" }
-        ];
-
-        var firstCard = null;
-        var secondCard = null;
-        var moves = 0;
-        var matches = 0;
-        var lockBoard = false;
-
-        // Elementos capturados imediatamente
-        var btnTheme = document.getElementById('btn-acessibilidade');
-        var formSetup = document.getElementById('config-form');
-        var inputName = document.getElementById('text-nome-jogador');
-        var statusPanel = document.getElementById('painel-status');
-        var welcomeTxt = document.getElementById('boas-vindas');
-        var txtMoves = document.getElementById('contador-movimentos');
-        var winMsg = document.getElementById('mensagem-vitoria');
-        var gridBoard = document.getElementById('tabuleiro-jogo');
-
-        // Evento de clique do Modo Escuro imediato
-        btnTheme.onclick = function() {
-            document.body.classList.toggle('dark-mode');
-        };
-
-        // Envio do formulário imediato
-        formSetup.onsubmit = function(e) {
-            e.preventDefault();
-            var player = inputName.value.trim();
-            welcomeTxt.textContent = "Investigador(a) ativo: " + player;
-            
-            formSetup.classList.add('oculto');
-            statusPanel.classList.remove('oculto');
-            gridBoard.classList.remove('oculto');
-            
-            buildBoard();
-        };
-
-        function buildBoard() {
-            gridBoard.innerHTML = '';
-            
-            // Mistura as cartas de forma aleatória
-            pairs.sort(function() { return Math.random() - 0.5; });
-
-            for (var i = 0; i < pairs.length; i++) {
-                var item = pairs[i];
-                var cardEl = document.createElement('div');
-                cardEl.className = 'carta';
-                cardEl.setAttribute('data-id', item.id);
-                cardEl.textContent = item.text;
-                
-                attachCardClick(cardEl);
-                gridBoard.appendChild(cardEl);
-            }
-        }
-
-        function attachCardClick(card) {
-            card.onclick = function() {
-                if (lockBoard) return;
-                if (card.classList.contains('par-encontrado') || card.classList.contains('virada')) return;
-
-                card.classList.add('virada');
-
-                if (firstCard === null) {
-                    firstCard = card;
-                    return;
-                }
-
-                secondCard = card;
-                moves++;
-                txtMoves.textContent = "Movimentos realizados: " + moves;
-                
-                checkMatch();
-            };
-        }
-
-        function checkMatch() {
-            var id1 = firstCard.getAttribute('data-id');
-            var id2 = secondCard.getAttribute('data-id');
-
-            if (id1 === id2) {
-                firstCard.className = 'carta par-encontrado';
-                secondCard.className = 'carta par-encontrado';
-                matches++;
-                firstCard = null;
-                secondCard = null;
-
-                if (matches === 4) {
-                    winMsg.classList.remove('oculto');
-                }
-            } else {
-                lockBoard = true;
-                setTimeout(function() {
-                    firstCard.classList.remove('virada');
-                    secondCard.classList.remove('virada');
-                    firstCard = null;
-                    secondCard = null;
-                    lockBoard = false;
-                }, 1000);
-            }
-        }
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cidadania Digital & IA - Fato ou Fake</title>
-    <!-- Vincula o arquivo de estilos externo -->
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <div class="header">
-        <h1>Cidadania Digital & IA</h1>
-        <p>Desafio Detetive: É Real ou foi Gerado por IA?</p>
-    </div>
-
-    <div class="game-container">
-        <div id="content" class="content-box">
-            <!-- Inserido dinamicamente pelo JavaScript -->
-        </div>
-
-        <div class="buttons-container">
-            <button class="btn-real" onclick="verificarResposta('real')">Humano / Real</button>
-            <button class="btn-ia" onclick="verificarResposta('ia')">Gerado por IA</button>
-        </div>
-
-        <div id="feedback" class="feedback"></div>
-
-        <div class="next-container">
-            <button id="btn-next" class="btn-next" onclick="proximoDesafio()">Próximo Desafio</button>
-        </div>
-
-        <div class="score-board">
-            Pontuação: <span id="score">0</span> / <span id="total">0</span>
-        </div>
-    </div>
-
-    <!-- Vincula o arquivo de lógica externo -->
-    <script src="script.js"></script>
-</body>
-</html>
+/* 4. Aula 4: Responsividade (Media Queries) */
+@media (min-width: 600px) {
+    .card-memoria {
+        width: calc(25% - 10px); /* 4 cards por linha em telas maiores */
+        height: 120px;
+    }
+}
