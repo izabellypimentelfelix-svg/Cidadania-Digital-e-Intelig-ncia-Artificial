@@ -1,166 +1,63 @@
-/* Variáveis de Cores e Estilos Globais */
-:root {
-    --cor-fundo: #f4f7f6;
-    --cor-card: #ffffff;
-    --cor-texto: #2c3e50;
-    --cor-primaria: #2980b9;
-    --cor-sucesso: #27ae60;
-    --cor-destaque: #e74c3c;
-}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Cidadania Digital 2026</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-body.dark-mode {
-    --cor-fundo: #1a252f;
-    --cor-card: #2c3e50;
-    --cor-texto: #ecf0f1;
-    --cor-primaria: #3498db;
-}
+    <header>
+        <h1>Cidadania Digital & IA</h1>
+        <p>O Impacto das Deepfakes e da Desinformação na Sociedade</p>
+        <button id="toggle-dark-mode" class="btn-acessibilidade">Modo Escuro</button>
+    </header>
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+    <main>
+        <!-- Seção Conceitual -->
+        <section class="container-info">
+            <h2>O que são Deepfakes?</h2>
+            <p>São vídeos, áudios ou imagens manipulados por Inteligência Artificial para simular pessoas dizendo ou fazendo coisas que nunca aconteceram, espalhando desinformação.</p>
+        </section>
 
-body {
-    background-color: var(--cor-fundo);
-    color: var(--cor-texto);
-    transition: background 0.3s, color 0.3s;
-    line-height: 1.6;
-}
+        <!-- Seção do Jogo da Memória -->
+        <section class="container-jogo">
+            <h2>Jogo da Memória: Detone a Desinformação</h2>
+            <p>Clique nos blocos para combinar os conceitos e aprender sobre segurança digital!</p>
+            <div class="placar">
+                <span>Acertos: <strong id="contador-acertos">0</strong> / 4</span>
+            </div>
+            
+            <div class="grid-memoria" id="grid-memoria">
+                <!-- Os cards serão gerados aqui pelo JavaScript -->
+            </div>
+        </section>
 
-/* Header */
-header {
-    background-color: var(--cor-primaria);
-    color: white;
-    padding: 2rem;
-    text-align: center;
-    position: relative;
-}
+        <!-- Seção de Formulário -->
+        <section class="container-formulario">
+            <h2>Denuncie uma Desinformação</h2>
+            <form id="form-contato">
+                <div class="grupo-campo">
+                    <label for="nome">Seu Nome:</label>
+                    <input type="text" id="nome" required placeholder="Digite seu nome">
+                </div>
+                
+                <div class="grupo-campo">
+                    <label for="mensagem">Onde você viu a possível Deepfake?</label>
+                    <textarea id="mensagem" required placeholder="Descreva o ocorrido..."></textarea>
+                </div>
 
-.btn-acessibilidade {
-    margin-top: 10px;
-    padding: 8px 15px;
-    cursor: pointer;
-    background: transparent;
-    border: 2px solid white;
-    color: white;
-    border-radius: 5px;
-    font-weight: bold;
-}
+                <button type="submit" id="btn-enviar">Enviar Relatório</button>
+            </form>
+            <div id="feedback-formulario" class="escondido"></div>
+        </section>
+    </main>
 
-/* Layout Geral com Flexbox */
-main {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
+    <footer>
+        <p>&copy; 2026 Projeto Cidadania Digital. #cidadaniadigital2026</p>
+    </footer>
 
-section {
-    background: var(--cor-card);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-/* Mecânica do Jogo da Memória */
-.placar {
-    margin-bottom: 15px;
-    font-size: 1.2rem;
-}
-
-.grid-memoria {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-}
-
-.card-memoria {
-    width: calc(50% - 10px);
-    height: 100px;
-    background-color: var(--cor-primaria);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 10px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.2s, background-color 0.2s;
-}
-
-.card-memoria.virado {
-    background-color: var(--cor-sucesso);
-}
-
-.card-memoria.par-encontrado {
-    background-color: #95a5a6;
-    cursor: not-allowed;
-}
-
-/* Formulários */
-.grupo-campo {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-}
-
-label {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input, textarea {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: var(--cor-card);
-    color: var(--cor-texto);
-}
-
-form button {
-    background-color: var(--cor-primaria);
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    width: 100%;
-}
-
-.escondido {
-    display: none;
-}
-
-#feedback-formulario {
-    margin-top: 15px;
-    padding: 10px;
-    background-color: var(--cor-sucesso);
-    color: white;
-    border-radius: 4px;
-    text-align: center;
-}
-
-/* Rodapé */
-footer {
-    text-align: center;
-    padding: 20px;
-    font-size: 0.9rem;
-}
-
-/* 4. Aula 4: Responsividade (Media Queries) */
-@media (min-width: 600px) {
-    .card-memoria {
-        width: calc(25% - 10px); /* 4 cards por linha em telas maiores */
-        height: 120px;
-    }
-}
+    <script src="script.js"></script>
+</body>
+</html>
