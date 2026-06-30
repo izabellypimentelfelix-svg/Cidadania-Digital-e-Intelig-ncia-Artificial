@@ -9,53 +9,70 @@
 <body>
 
     <header>
-        <h1>Cidadania Digital & IA</h1>
-        <p>O Impacto das Deepfakes e da Desinformação na Sociedade</p>
-        <button id="toggle-dark-mode" class="btn-acessibilidade">Modo Escuro</button>
+        <h1>Cidadania Digital & Inteligência Artificial</h1>
+        <p>Guia Prático contra Deepfakes e Desinformação Automatizada</p>
+        <button id="toggle-dark-mode" class="btn-acessibilidade">Alternar Modo Escuro</button>
     </header>
 
     <main>
-        <!-- Seção Conceitual -->
+        <!-- 1. Central de Informações Expandida -->
         <section class="container-info">
-            <h2>O que são Deepfakes?</h2>
-            <p>São vídeos, áudios ou imagens manipulados por Inteligência Artificial para simular pessoas dizendo ou fazendo coisas que nunca aconteceram, espalhando desinformação.</p>
+            <h2>Como Identificar uma Deepfake?</h2>
+            <p>A Inteligência Artificial evoluiu, mas ainda deixa rastros. Fique atento a estes quatro pontos fundamentais:</p>
+            <ul class="lista-Dicas">
+                <li><strong>Piscada de olhos não natural:</strong> Muitas IAs falham em simular a frequência correta do piscar de olhos.</li>
+                <li><strong>Falhas nas bordas:</strong> Verifique o contorno do rosto, orelhas e a linha do cabelo em busca de borrões.</li>
+                <li><strong>Sincronia labial ruim:</strong> Observe se o movimento da boca condiz exatamente com o áudio reproduzido.</li>
+                <li><strong>Iluminação e sombras:</strong> Direções de sombras inconsistentes no rosto ou reflexos estranhos nos olhos revelam manipulação.</li>
+            </ul>
         </section>
 
-        <!-- Seção do Jogo da Memória -->
+        <!-- 2. Jogo 1: Jogo da Memória Expandido (6 Pares) -->
         <section class="container-jogo">
-            <h2>Jogo da Memória: Detone a Desinformação</h2>
-            <p>Clique nos blocos para combinar os conceitos e aprender sobre segurança digital!</p>
+            <h2>Jogo 1: Jogo da Memória Digital</h2>
+            <p>Combine os conceitos corretos para pontuar e fixar o conhecimento!</p>
             <div class="placar">
-                <span>Acertos: <strong id="contador-acertos">0</strong> / 4</span>
+                <span>Acertos: <strong id="contador-acertos">0</strong> / 6</span>
             </div>
-            
             <div class="grid-memoria" id="grid-memoria">
-                <!-- Os cards serão gerados aqui pelo JavaScript -->
+                <!-- Cards gerados via JS -->
             </div>
         </section>
 
-        <!-- Seção de Formulário -->
+        <!-- 3. Jogo 2: Quiz de Prevenção (Novo) -->
+        <section class="container-quiz">
+            <h2>Jogo 2: Teste de Combate à Desinformação</h2>
+            <p>O que você faria se recebesse um vídeo suspeito de um político ou celebridade no WhatsApp?</p>
+            <div class="opcoes-quiz">
+                <button class="btn-quiz" data-correto="false">Compartilhar imediatamente para alertar meus amigos.</button>
+                <button class="btn-quiz" data-correto="true">Não compartilhar e buscar o assunto em sites de checagem confiáveis.</button>
+                <button class="btn-quiz" data-correto="false">Acreditar totalmente, pois imagens e vídeos não mentem.</button>
+            </div>
+            <div id="feedback-quiz" class="escondido"></div>
+        </section>
+
+        <!-- 4. Formulário Semântico de Denúncias -->
         <section class="container-formulario">
-            <h2>Denuncie uma Desinformação</h2>
+            <h2>Canal de Alerta Comunitário</h2>
             <form id="form-contato">
                 <div class="grupo-campo">
                     <label for="nome">Seu Nome:</label>
-                    <input type="text" id="nome" required placeholder="Digite seu nome">
+                    <input type="text" id="nome" required placeholder="Digite seu nome completo">
                 </div>
                 
                 <div class="grupo-campo">
-                    <label for="mensagem">Onde você viu a possível Deepfake?</label>
-                    <textarea id="mensagem" required placeholder="Descreva o ocorrido..."></textarea>
+                    <label for="mensagem">Descreva a suspeita de manipulação por IA:</label>
+                    <textarea id="mensagem" required placeholder="Cole links ou detalhe o contexto da mídia suspeita..."></textarea>
                 </div>
 
-                <button type="submit" id="btn-enviar">Enviar Relatório</button>
+                <button type="submit" id="btn-enviar">Enviar para Análise</button>
             </form>
             <div id="feedback-formulario" class="escondido"></div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2026 Projeto Cidadania Digital. #cidadaniadigital2026</p>
+        <p>&copy; 2026 Projeto Cidadania Digital. Entrega Oficial. #cidadaniadigital2026</p>
     </footer>
 
     <script src="script.js"></script>
