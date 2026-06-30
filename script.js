@@ -125,3 +125,89 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+// Banco de dados dos desafios do jogo
+const desafios = [
+    {
+        tipo: 'texto',
+        conteudo: '"Cientistas descobrem espécie de polvo voador na floresta Amazônica que se alimenta de frutas."',
+        resposta: 'ia',
+        explicacao: 'FALSO! Alucinando fatos biológicos. Ferramentas de IA generativa de texto podem criar notícias falsas altamente convincentes.'
+    },
+    {
+        tipo: 'texto',
+        conteudo: 'Uma fotografia mostra o Papa Francisco vestindo um casaco de jaqueta puffer branca estilosa de alta costura.',
+        resposta: 'ia',
+        explicacao: 'FALSO! Essa imagem viralizou mundialmente e foi gerada usando o software Midjourney v5.'
+    },
+    {
+        tipo: 'texto',
+        conteudo: '"O primeiro satélite artificial da Terra, o Sputnik 1, foi lançado pela União Soviética em 4 de outubro de 1957."',
+        resposta: 'real',
+        explicacao: 'VERDADEIRO! Este é um fato histórico real registrado e verificado por enciclopédias e livros didáticos.'
+    }
+];
+
+let indiceAtual = 0;
+let acertos = 0;
+
+const elementoContent = document.getElementById('content');
+const elementoFeedback = document.getElementById('feedback');
+const elementoBtnNext = document.getElementById('btn-next');
+const elementoScore = document.getElementById('score');
+const elementoTotal = document.getElementById('total');
+
+function carregarDesafio() {
+    elementoFeedback.style.display = 'none';
+    elementoBtnNext.style.display = 'none';
+    habilitarBotoes(true);
+
+    const atual = desafios[indiceAtual];
+
+    if (atual.tipo === 'texto') {
+        elementoContent.innerHTML = atual.conteudo;
+    } else if (atual.tipo === 'imagem') {
+        elementoContent.innerHTML = `<img src="${atual.conteudo}" alt="Desafio Visual">`;
+    }
+    
+    elementoTotal.innerText = desafios.length;
+}
+
+function verificarResposta(escolhaUsuario) {
+    habilitarBotoes(false);
+    const atual = desafios[indiceAtual];
+
+    if (escolhaUsuario === atual.resposta) {
+        acertos++;
+        elementoFeedback.style.backgroundColor = '#dcfce7';
+        elementoFeedback.style.color = '#15803d';
+        elementoFeedback.innerHTML = `<strong>🎉 Acertou!</strong><br>${atual.explicacao}`;
+    } else {
+        elementoFeedback.style.backgroundColor = '#fee2e2';
+        elementoFeedback.style.color = '#b91c1c';
+        elementoFeedback.innerHTML = `<strong>❌ Errou!</strong><br>${atual.explicacao}`;
+    }
+
+    elementoScore.innerText = acertos;
+    elementoFeedback.style.display = 'block';
+    elementoBtnNext.style.display = 'inline-block';
+}
+
+function habilitarBotoes(status) {
+    const botoes = document.querySelectorAll('.buttons-container button');
+    botoes.forEach(btn => btn.disabled = !status);
+}
+
+function proximoDesafio() {
+    indiceAtual++;
+    if (indiceAtual < desafios.length) {
+        carregarDesafio();
+    } else {
+        elementoContent.innerHTML = `<h3>Fim de Jogo!</h3><p>Você completou o treinamento de detetive de IA.</p>`;
+        elementoFeedback.style.display = 'none';
+        elementoBtnNext.style.display = 'none';
+        document.querySelector('.buttons-container').style.display = 'none';
+    }
+}
+
+// Inicializa o primeiro desafio da tela ao carregar o script
+carregarDesafio();
