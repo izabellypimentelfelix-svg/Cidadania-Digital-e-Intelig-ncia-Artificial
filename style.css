@@ -1,18 +1,168 @@
-# Cidadania Digital e Inteligência Artificial 🌐🤖
-Projeto escolar focado na conscientização comunitária sobre os perigos da desinformação automatizada e uso de mídias geradas por IA (Deepfakes).
+/* Variáveis de Cores (Padrão Claro) */
+:root {
+    --cor-fundo: #f4f7f6;
+    --cor-card: #ffffff;
+    --cor-texto: #2c3e50;
+    --cor-primaria: #2980b9;
+    --cor-sucesso: #27ae60;
+    --cor-card-verso: #34495e;
+}
 
-Tag do Projeto: #cidadaniadigital2026
+/* Classe aplicada via JS para o Modo Escuro */
+body.dark-mode {
+    --cor-fundo: #1a252f;
+    --cor-card: #2c3e50;
+    --cor-texto: #ecf0f1;
+    --cor-primaria: #3498db;
+    --cor-card-verso: #7f8c8d;
+}
 
-## 🎯 Objetivos do Portal
-- Ensinar cidadãos a detectarem mídias forjadas por IA.
-- Oferecer uma dinâmica interativa gamificada através de um Jogo da Memória Conceitual.
-- Disponibilizar um canal direto de denúncias através de formulários integrados.
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
 
-## 🛠️ Tecnologias Utilizadas
-- **HTML5:** Estrutura semântica dedicada à acessibilidade.
-- **CSS3:** Estilização com layouts Flexbox responsivos para celulares e desktops.
-- **JavaScript (ES6):** Manipulação dinâmica de elementos via DOM e lógica do jogo.
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    transition: background 0.3s, color 0.3s;
+    padding: 10px;
+}
 
-## 🧠 Prompts de IA Utilizados no Desenvolvimento
-1. *"Gere uma estrutura de dados em array Javascript contendo 4 pares de conceitos sobre deepfakes e desinformação para um jogo da memória."*
-2. *"Como criar um validador de cliques que impeça o usuário de selecionar mais de dois cards simultaneamente no jogo da memória?"*
+header {
+    background-color: var(--cor-primaria);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.btn-acessibilidade {
+    margin-top: 10px;
+    padding: 8px 15px;
+    cursor: pointer;
+    background: white;
+    border: none;
+    color: var(--cor-primaria);
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+main {
+    max-width: 800px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+section {
+    background: var(--cor-card);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Estrutura do Jogo da Memória com Flexbox */
+.placar {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.grid-memoria {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* Estilo Base do Card */
+.card-memoria {
+    width: calc(50% - 10px); /* 2 por linha no celular */
+    height: 110px;
+    background-color: var(--cor-card-verso);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+/* Estado de Card Revelado/Virado */
+.card-memoria.virado {
+    background-color: var(--cor-primaria);
+}
+
+/* Estado de Par Validado */
+.card-memoria.par-encontrado {
+    background-color: var(--cor-sucesso);
+    cursor: not-allowed;
+}
+
+/* Formulários */
+.grupo-campo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input, textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: var(--cor-card);
+    color: var(--cor-texto);
+}
+
+form button {
+    background-color: var(--cor-primaria);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.escondido {
+    display: none;
+}
+
+#feedback-formulario {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: var(--cor-sucesso);
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+}
+
+/* Responsividade (Telas maiores) */
+@media (min-width: 600px) {
+    .card-memoria {
+        width: calc(25% - 10px); /* 4 por linha no computador */
+        height: 130px;
+    }
+}
