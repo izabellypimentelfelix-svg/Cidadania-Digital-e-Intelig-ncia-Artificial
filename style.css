@@ -65,7 +65,6 @@ section {
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
-/* Informações */
 .lista-Dicas {
     margin-top: 15px;
     margin-left: 20px;
@@ -89,7 +88,7 @@ section {
 }
 
 .card-memoria {
-    width: calc(50% - 10px); /* 2 por linha em telas pequenas */
+    width: calc(50% - 10px);
     height: 120px;
     background-color: var(--cor-card-verso);
     color: white;
@@ -115,7 +114,7 @@ section {
     cursor: not-allowed;
 }
 
-/* Novo Jogo: Quiz */
+/* Quiz de Múltipla Escolha e Novo Quiz V ou F */
 .opcoes-quiz {
     display: flex;
     flex-direction: column;
@@ -138,6 +137,32 @@ section {
 .btn-quiz:hover {
     background: var(--cor-fundo);
 }
+
+/* Estilos específicos para as perguntas V ou F */
+.item-pergunta-vf {
+    background: var(--cor-fundo);
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 15px;
+}
+
+.botoes-vf {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-vf {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+}
+
+.btn-vf.verdadeiro { background-color: var(--cor-sucesso); }
+.btn-vf.falso { background-color: var(--cor-erro); }
 
 /* Formulários e Feedbacks */
 .grupo-campo {
@@ -175,7 +200,7 @@ form button {
     display: none;
 }
 
-#feedback-formulario, #feedback-quiz {
+#feedback-formulario, #feedback-quiz, #feedback-vf {
     margin-top: 15px;
     padding: 12px;
     color: white;
@@ -190,10 +215,10 @@ footer {
     font-size: 0.9rem;
 }
 
-/* Responsividade Avançada */
+/* Responsividade */
 @media (min-width: 600px) {
     .card-memoria {
-        width: calc(25% - 10px); /* 4 por linha no PC */
+        width: calc(25% - 10px);
         height: 140px;
     }
 }
