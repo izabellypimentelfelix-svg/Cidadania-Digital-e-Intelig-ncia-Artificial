@@ -4,7 +4,7 @@ botaoDarkMode.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
 });
 
-// 2. Banco de Dados do Jogo da Memória Expandido (6 Pares / 12 Cards)
+// 2. Banco de Dados do Jogo da Memória (6 Pares / 12 Cards)
 const dadosCards = [
     { id: 1, texto: "Deepfake" },
     { id: 1, texto: "Manipulação de vídeo/áudio com IA" },
@@ -81,7 +81,7 @@ function checarPar() {
     }
 }
 
-// 3. Lógica do Novo Jogo (Quiz)
+// 3. Lógica do Jogo 2 (Quiz de Múltipla Escolha)
 const botoesQuiz = document.querySelectorAll('.btn-quiz');
 const feedbackQuiz = document.getElementById('feedback-quiz');
 
@@ -95,12 +95,52 @@ botoesQuiz.forEach(botao => {
             feedbackQuiz.innerText = "Resposta Correta! Quebrar a corrente de compartilhamento impede que as fake news cresçam.";
         } else {
             feedbackQuiz.style.backgroundColor = 'var(--cor-erro)';
-            feedbackQuiz.innerText = "Resposta Errada. Compartilhar sem checar ou aceitar mídias cegamente alimenta a desinformação.";
+            feedbackQuiz.innerText = "Resposta Errada. Compartilhar sem checar alimenta os perigos digitais.";
         }
     });
 });
 
-// 4. Formulário de Contato / Relatórios
+// 4. Lógica do Jogo 3 (Perguntas Verdadeiro ou Falso Dinâmicas)
+const perguntasVF = [
+    { texto: "Qualquer pessoa com acesso à internet e um aplicativo gratuito consegue criar uma deepfake básica hoje em dia.", resposta: true },
+    { texto: "As deepfakes de áudio (clonagem de voz) são mitos e ainda não podem ser usadas para aplicar golpes por telefone.", resposta: false },
+    { texto: "Sites de fact-checking (checagem de fatos) usam equipes humanas e tecnologia para desmascarar notícias falsas.", resposta: true },
+    { texto: "Se um vídeo está em um grande canal de rede social, significa que ele foi automaticamente verificado e é 100% verdadeiro.", resposta: false }
+];
+
+const containerListaVF = document.getElementById('lista-perguntas-vf');
+const feedbackVF = document.getElementById('feedback-vf');
+
+function iniciarQuizVF() {
+    perguntasVF.forEach((pergunta, index) => {
+        const divPergunta = document.createElement('div');
+        divPergunta.classList.add('item-pergunta-vf');
+        
+        divPergunta.innerHTML = `
+            <p><strong>Questão ${index + 1}:</strong> ${pergunta.texto}</p>
+            <div class="botoes-vf">
+                <button class="btn-vf verdadeiro" onclick="validarVF(${index}, true)">Verdadeiro</button>
+                <button class="btn-vf falso" onclick="validarVF(${index}, false)">Falso</button>
+            </div>
+        `;
+        containerListaVF.appendChild(divPergunta);
+    });
+}
+
+function validarVF(indexPergunta, escolhaUsuario) {
+    const respostaCorreta = perguntasVF[indexPergunta].resposta;
+    
+    feedbackVF.classList.remove('escondido');
+    if (escolhaUsuario === respostaCorreta) {
+        feedbackVF.style.backgroundColor = 'var(--cor-sucesso)';
+        feedbackVF.innerText = `Acertou a Questão ${indexPergunta + 1}! Ótimo senso crítico.`;
+    } else {
+        feedbackVF.style.backgroundColor = 'var(--cor-erro)';
+        feedbackVF.innerText = `Errou a Questão ${indexPergunta + 1}. Fique atento aos detalhes ocultos!`;
+    }
+}
+
+// 5. Formulário de Contato / Relatórios
 const formContato = document.getElementById('form-contato');
 const feedbackFormulario = document.getElementById('feedback-formulario');
 
@@ -115,5 +155,6 @@ formContato.addEventListener('submit', function(evento) {
     formContato.reset();
 });
 
-// Inicialização automática das cartas
+// Inicialização das funções automáticas ao abrir a página
 iniciarJogoMemoria();
+iniciarQuizVF();
