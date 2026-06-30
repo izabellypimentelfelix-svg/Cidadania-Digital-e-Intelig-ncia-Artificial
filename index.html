@@ -324,3 +324,44 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cidadania Digital & IA - Fato ou Fake</title>
+    <!-- Vincula o arquivo de estilos externo -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="header">
+        <h1>Cidadania Digital & IA</h1>
+        <p>Desafio Detetive: É Real ou foi Gerado por IA?</p>
+    </div>
+
+    <div class="game-container">
+        <div id="content" class="content-box">
+            <!-- Inserido dinamicamente pelo JavaScript -->
+        </div>
+
+        <div class="buttons-container">
+            <button class="btn-real" onclick="verificarResposta('real')">Humano / Real</button>
+            <button class="btn-ia" onclick="verificarResposta('ia')">Gerado por IA</button>
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+
+        <div class="next-container">
+            <button id="btn-next" class="btn-next" onclick="proximoDesafio()">Próximo Desafio</button>
+        </div>
+
+        <div class="score-board">
+            Pontuação: <span id="score">0</span> / <span id="total">0</span>
+        </div>
+    </div>
+
+    <!-- Vincula o arquivo de lógica externo -->
+    <script src="script.js"></script>
+</body>
+</html>
