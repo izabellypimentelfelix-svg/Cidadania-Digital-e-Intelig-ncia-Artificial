@@ -100,7 +100,7 @@ botoesQuiz.forEach(botao => {
     });
 });
 
-// 4. Lógica do Jogo 3 (Perguntas Verdadeiro ou Falso Dinâmicas)
+// 4. Lógica do Jogo 3 (Perguntas Verdadeiro ou Falso - SEGURA E COMPATÍVEL)
 const perguntasVF = [
     { texto: "Qualquer pessoa com acesso à internet e um aplicativo gratuito consegue criar uma deepfake básica hoje em dia.", resposta: true },
     { texto: "As deepfakes de áudio (clonagem de voz) são mitos e ainda não podem ser usadas para aplicar golpes por telefone.", resposta: false },
@@ -116,18 +116,36 @@ function iniciarQuizVF() {
         const divPergunta = document.createElement('div');
         divPergunta.classList.add('item-pergunta-vf');
         
-        divPergunta.innerHTML = `
-            <p><strong>Questão ${index + 1}:</strong> ${pergunta.texto}</p>
-            <div class="botoes-vf">
-                <button class="btn-vf verdadeiro" onclick="validarVF(${index}, true)">Verdadeiro</button>
-                <button class="btn-vf falso" onclick="validarVF(${index}, false)">Falso</button>
-            </div>
-        `;
+        // Criamos o texto da pergunta
+        const textoPergunta = document.createElement('p');
+        textoPergunta.innerHTML = `<strong>Questão ${index + 1}:</strong> ${pergunta.texto}`;
+        divPergunta.appendChild(textoPergunta);
+        
+        // Criamos o container de botões
+        const divBotoes = document.createElement('div');
+        divBotoes.classList.add('botoes-vf');
+        
+        // Botão Verdadeiro feito direto pelo DOM (Evita erros no HTML)
+        const btnV = document.createElement('button');
+        btnV.classList.add('btn-vf', 'verdadeiro');
+        btnV.innerText = "Verdadeiro";
+        btnV.addEventListener('click', () => checarRespostaVF(index, true));
+        
+        // Botão Falso feito direto pelo DOM
+        const btnF = document.createElement('button');
+        btnF.classList.add('btn-vf', 'falso');
+        btnF.innerText = "Falso";
+        btnF.addEventListener('click', () => checarRespostaVF(index, false));
+        
+        divBotoes.appendChild(btnV);
+        divBotoes.appendChild(btnF);
+        divPergunta.appendChild(divBotoes);
+        
         containerListaVF.appendChild(divPergunta);
     });
 }
 
-function validarVF(indexPergunta, escolhaUsuario) {
+function checarRespostaVF(indexPergunta, escolhaUsuario) {
     const respostaCorreta = perguntasVF[indexPergunta].resposta;
     
     feedbackVF.classList.remove('escondido');
@@ -155,6 +173,6 @@ formContato.addEventListener('submit', function(evento) {
     formContato.reset();
 });
 
-// Inicialização das funções automáticas ao abrir a página
+// Inicialização segura ao carregar a página
 iniciarJogoMemoria();
 iniciarQuizVF();
