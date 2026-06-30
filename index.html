@@ -15,7 +15,7 @@
     </header>
 
     <main>
-        <!-- 1. Central de Informações Expandida -->
+        <!-- 1. Central de Informações -->
         <section class="container-info">
             <h2>Como Identificar uma Deepfake?</h2>
             <p>A Inteligência Artificial evoluiu, mas ainda deixa rastros. Fique atento a estes quatro pontos fundamentais:</p>
@@ -39,9 +39,9 @@
             </div>
         </section>
 
-        <!-- 3. Jogo 2: Quiz de Prevenção (Novo) -->
+        <!-- 3. Jogo 2: Quiz de Múltipla Escolha -->
         <section class="container-quiz">
-            <h2>Jogo 2: Teste de Combate à Desinformação</h2>
+            <h2>Jogo 2: Teste de Tomada de Decisão</h2>
             <p>O que você faria se recebesse um vídeo suspeito de um político ou celebridade no WhatsApp?</p>
             <div class="opcoes-quiz">
                 <button class="btn-quiz" data-correto="false">Compartilhar imediatamente para alertar meus amigos.</button>
@@ -51,7 +51,19 @@
             <div id="feedback-quiz" class="escondido"></div>
         </section>
 
-        <!-- 4. Formulário Semântico de Denúncias -->
+        <!-- 4. Jogo 3: Novo Quiz Verdadeiro ou Falso -->
+        <section class="container-vf">
+            <h2>Jogo 3: Desafio Verdadeiro (V) ou Falso (F)</h2>
+            <p>Responda às afirmações abaixo sobre o universo das deepfakes:</p>
+            
+            <div id="lista-perguntas-vf">
+                <!-- As perguntas de V ou F serão injetadas dinamicamente aqui pelo JS -->
+            </div>
+            
+            <div id="feedback-vf" class="escondido"></div>
+        </section>
+
+        <!-- 5. Canal de Alerta Comunitário (Formulário) -->
         <section class="container-formulario">
             <h2>Canal de Alerta Comunitário</h2>
             <form id="form-contato">
